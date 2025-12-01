@@ -1,63 +1,124 @@
 {
-  "fsas": {
-    "type":"FeatureCollection",
-    "features":[
-      {
-        "type":"Feature",
-        "properties":{
-          "FSA":"N6A",
-          "avg_income":210000,
-          "households":4200,
-          "customers":420,
-          "penetration":10,
-          "avg_order_value":34
-        },
-        "geometry":{
-          "type":"Polygon",
-          "coordinates":[[[-81.35,43.03],[-81.25,43.03],[-81.25,42.95],[-81.35,42.95],[-81.35,43.03]]]
-        }
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "fsa",
+        "FSA": "N6A",
+        "avg_income": 210000,
+        "households": 4200,
+        "customers": 420,
+        "penetration": 10,
+        "avg_order_value": 34
       },
-      {
-        "type":"Feature",
-        "properties":{
-          "FSA":"N6B",
-          "avg_income":145000,
-          "households":3800,
-          "customers":95,
-          "penetration":2.5,
-          "avg_order_value":28
-        },
-        "geometry":{
-          "type":"Polygon",
-          "coordinates":[[[-81.25,43.03],[-81.15,43.03],[-81.15,42.95],[-81.25,42.95],[-81.25,43.03]]]
-        }
-      },
-      {
-        "type":"Feature",
-        "properties":{
-          "FSA":"N6C",
-          "avg_income":98000,
-          "households":3000,
-          "customers":30,
-          "penetration":1,
-          "avg_order_value":22
-        },
-        "geometry":{
-          "type":"Polygon",
-          "coordinates":[[[-81.35,42.95],[-81.25,42.95],[-81.25,42.87],[-81.35,42.87],[-81.35,42.95]]]
-        }
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-81.35, 43.03],
+            [-81.25, 43.03],
+            [-81.25, 42.95],
+            [-81.35, 42.95],
+            [-81.35, 43.03]
+          ]
+        ]
       }
-    ]
-  },
-  "commercial": {
-    "type":"FeatureCollection",
-    "features":[
-      {"type":"Feature","properties":{"name":"Sample Diner","type":"restaurant"},"geometry":{"type":"Point","coordinates":[-81.28,43.00]}},
-      {"type":"Feature","properties":{"name":"Retirement Home A","type":"retirement_home"},"geometry":{"type":"Point","coordinates":[-81.32,42.98]}},
-      {"type":"Feature","properties":{"name":"Food Market","type":"food_service"},"geometry":{"type":"Point","coordinates":[-81.22,42.99]}}
-    ]
-  },
-  "stores":[
-    {"name":"Grill Hero London - Main", "lat":42.99, "lon":-81.27}
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "fsa",
+        "FSA": "N6B",
+        "avg_income": 145000,
+        "households": 3800,
+        "customers": 95,
+        "penetration": 2.5,
+        "avg_order_value": 28
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-81.25, 43.03],
+            [-81.15, 43.03],
+            [-81.15, 42.95],
+            [-81.25, 42.95],
+            [-81.25, 43.03]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "fsa",
+        "FSA": "N6C",
+        "avg_income": 98000,
+        "households": 3000,
+        "customers": 30,
+        "penetration": 1,
+        "avg_order_value": 22
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-81.35, 42.95],
+            [-81.25, 42.95],
+            [-81.25, 42.87],
+            [-81.35, 42.87],
+            [-81.35, 42.95]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "commercial",
+        "name": "Sample Diner",
+        "type": "restaurant"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-81.28, 43.00]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "commercial",
+        "name": "Retirement Home A",
+        "type": "retirement_home"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-81.32, 42.98]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "commercial",
+        "name": "Food Market",
+        "type": "food_service"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-81.22, 42.99]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "layer": "store",
+        "name": "Grill Hero London - Main"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-81.27, 42.99]
+      }
+    }
   ]
 }
