@@ -1,4 +1,4 @@
-// map.js - lightweight sample map logic
+// map.js - finished sample map for Middlesex (client-only demo)
 const map = L.map('map', { zoomControl:true }).setView([42.98, -81.25], 11);
 
 // base tiles
@@ -22,6 +22,32 @@ const params = {
   avgSpeedKmph: 40
 };
 
+// --- Modern unload/cleanup handling (replace deprecated unload handlers) ---
+function cleanup() {
+  try {
+    if (map && map.remove) map.remove();
+    if (typeof income100 !== 'undefined' && income100.clearLayers) income100.clearLayers();
+    if (typeof income150 !== 'undefined' && income150.clearLayers) income150.clearLayers();
+    if (typeof income200 !== 'undefined' && income200.clearLayers) income200.clearLayers();
+    if (typeof penetrationLayer !== 'undefined' && penetrationLayer.clearLayers) penetrationLayer.clearLayers();
+    if (typeof commercialLayer !== 'undefined' && commercialLayer.clearLayers) commercialLayer.clearLayers();
+    if (typeof isoLayer !== 'undefined' && isoLayer.clearLayers) isoLayer.clearLayers();
+    if (typeof costLayer !== 'undefined' && costLayer.clearLayers) costLayer.clearLayers();
+  } catch (e) {
+    console.warn('Cleanup error', e);
+  } finally {
+    window.removeEventListener('pagehide', onPageHide);
+    window.removeEventListener('beforeunload', onBeforeUnload);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+  }
+}
+function onPageHide(e) { cleanup(); }
+function onBeforeUnload(e) { cleanup(); }
+function onVisibilityChange(e) { if (document.visibilityState === 'hidden') cleanup(); }
+window.addEventListener('pagehide', onPageHide, { once: true });
+window.addEventListener('beforeunload', onBeforeUnload, { once: true });
+document.addEventListener('visibilitychange', onVisibilityChange);
+
 // load sample GeoJSON
 fetch('middlesex_sample.geojson').then(r=>r.json()).then(data=>{
   const fsas = data.fsas;
@@ -31,11 +57,9 @@ fetch('middlesex_sample.geojson').then(r=>r.json()).then(data=>{
   // draw FSAs with income thresholds and penetration
   fsas.features.forEach(f => {
     const p = f.properties;
-    const style = {
-      weight:1, color:'#222', fillOpacity:0.45
-    };
+    const baseStyle = { weight:1, color:'#222', fillOpacity:0.45 };
     const popup = `<b>${p.FSA}</b><br>Income: $${p.avg_income.toLocaleString()}<br>Households: ${p.households}<br>Customers: ${p.customers}<br>Penetration: ${p.penetration.toFixed(2)}%`;
-    const layer = L.geoJSON(f, { style: style }).bindPopup(popup).on('click', ()=> showFsaInfo(p));
+    const layer = L.geoJSON(f, { style: baseStyle }).bindPopup(popup).on('click', ()=> showFsaInfo(p));
     // income layers
     if (p.avg_income >= 100000) layer.addTo(income100);
     if (p.avg_income >= 150000) layer.addTo(income150);
@@ -60,7 +84,7 @@ fetch('middlesex_sample.geojson').then(r=>r.json()).then(data=>{
   stores.forEach(s=>{
     L.circleMarker([s.lat,s.lon], { radius:8, fillColor:'#ff7a18', color:'#fff', weight:1, fillOpacity:1 }).addTo(map).bindPopup(`<b>${s.name}</b>`);
     // sample isochrone polygons (static for demo)
-    const iso5 = turf.circle([s.lon,s.lat], 5/60, { steps:64, units:'degrees' }); // small demo circle
+    const iso5 = turf.circle([s.lon,s.lat], 5/60, { steps:64, units:'degrees' });
     const iso10 = turf.circle([s.lon,s.lat], 10/60, { steps:64, units:'degrees' });
     L.geoJSON(iso10, { style:{ color:'#0ea5a4', weight:1, fillOpacity:0.08 } }).addTo(isoLayer);
     L.geoJSON(iso5, { style:{ color:'#06b6d4', weight:1, fillOpacity:0.12 } }).addTo(isoLayer);
