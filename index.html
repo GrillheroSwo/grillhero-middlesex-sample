@@ -11,80 +11,82 @@
 </head>
 <body>
   <div id="sidebar" role="region" aria-label="Map controls and information">
-  <h2>Grill Hero Middlesex Sample</h2>
+    <h2>Grill Hero Middlesex Sample</h2>
 
-  <fieldset class="controls" aria-labelledby="income-filters-legend">
-    <legend id="income-filters-legend">Income Layers</legend>
+    <fieldset class="controls" aria-labelledby="income-filters-legend">
+      <legend id="income-filters-legend">Income Layers</legend>
 
-    <div class="control-row">
-      <input type="checkbox" id="layer-income-100" checked aria-checked="true" />
-      <label for="layer-income-100" title="Toggle income areas with average household income greater than $100,000">Income &gt; $100k</label>
+      <div class="control-row">
+        <input type="checkbox" id="layer-income-100" checked aria-checked="true" />
+        <label for="layer-income-100" title="Toggle income areas with average household income greater than $100,000">Income &gt; $100k</label>
+      </div>
+
+      <div class="control-row">
+        <input type="checkbox" id="layer-income-150" checked aria-checked="true" />
+        <label for="layer-income-150" title="Toggle income areas with average household income greater than $150,000">Income &gt; $150k</label>
+      </div>
+
+      <div class="control-row">
+        <input type="checkbox" id="layer-income-200" checked aria-checked="true" />
+        <label for="layer-income-200" title="Toggle income areas with average household income greater than $200,000">Income &gt; $200k</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="controls" aria-labelledby="other-layers-legend">
+      <legend id="other-layers-legend">Other Layers</legend>
+
+      <div class="control-row">
+        <input type="checkbox" id="layer-penetration" checked aria-checked="true" />
+        <label for="layer-penetration" title="Show customer penetration by postal code">Customer Penetration</label>
+      </div>
+
+      <div class="control-row">
+        <input type="checkbox" id="layer-commercial" checked aria-checked="true" />
+        <label for="layer-commercial" title="Show commercial hotspots such as restaurants and retirement homes">Commercial Hotspots</label>
+      </div>
+
+      <div class="control-row">
+        <input type="checkbox" id="layer-iso" checked aria-checked="true" />
+        <label for="layer-iso" title="Show drive-time isochrones from store locations">Drive-time Isochrones</label>
+      </div>
+
+      <div class="control-row">
+        <input type="checkbox" id="layer-cost" checked aria-checked="true" />
+        <label for="layer-cost" title="Show delivery cost heatmap by area">Delivery Cost Heatmap</label>
+      </div>
+    </fieldset>
+
+    <div id="fsa-info" aria-live="polite">
+      <h3>FSA Details</h3>
+      <div id="info-content">Click an area on the map</div>
     </div>
 
-    <div class="control-row">
-      <input type="checkbox" id="layer-income-150" checked aria-checked="true" />
-      <label for="layer-income-150" title="Toggle income areas with average household income greater than $150,000">Income &gt; $150k</label>
-    </div>
+    <form class="params" aria-labelledby="cost-params-legend" onsubmit="return false;">
+      <fieldset>
+        <legend id="cost-params-legend">Cost Parameters</legend>
 
-    <div class="control-row">
-      <input type="checkbox" id="layer-income-200" checked aria-checked="true" />
-      <label for="layer-income-200" title="Toggle income areas with average household income greater than $200,000">Income &gt; $200k</label>
-    </div>
-  </fieldset>
+        <label for="param-wage">Driver wage $/hr</label>
+        <input id="param-wage" name="driverWage" type="number" value="20" min="0" step="0.5"
+               title="Enter driver hourly wage in dollars" placeholder="e.g., 20" aria-label="Driver wage dollars per hour" />
 
-  <fieldset class="controls" aria-labelledby="other-layers-legend">
-    <legend id="other-layers-legend">Other Layers</legend>
+        <label for="param-veh">Vehicle cost $/km</label>
+        <input id="param-veh" name="vehicleCostPerKm" type="number" value="0.6" step="0.1" min="0"
+               title="Enter vehicle cost per kilometre in dollars" placeholder="e.g., 0.6" aria-label="Vehicle cost dollars per kilometre" />
 
-    <div class="control-row">
-      <input type="checkbox" id="layer-penetration" checked aria-checked="true" />
-      <label for="layer-penetration" title="Show customer penetration by postal code">Customer Penetration</label>
-    </div>
+        <label for="param-service">Avg service time minutes</label>
+        <input id="param-service" name="avgServiceMin" type="number" value="5" min="0" step="1"
+               title="Enter average service time per stop in minutes" placeholder="e.g., 5" aria-label="Average service time minutes" />
 
-    <div class="control-row">
-      <input type="checkbox" id="layer-commercial" checked aria-checked="true" />
-      <label for="layer-commercial" title="Show commercial hotspots such as restaurants and retirement homes">Commercial Hotspots</label>
-    </div>
-
-    <div class="control-row">
-      <input type="checkbox" id="layer-iso" checked aria-checked="true" />
-      <label for="layer-iso" title="Show drive-time isochrones from store locations">Drive-time Isochrones</label>
-    </div>
-
-    <div class="control-row">
-      <input type="checkbox" id="layer-cost" checked aria-checked="true" />
-      <label for="layer-cost" title="Show delivery cost heatmap by area">Delivery Cost Heatmap</label>
-    </div>
-  </fieldset>
-
-  <div id="fsa-info" aria-live="polite">
-    <h3>FSA Details</h3>
-    <div id="info-content">Click an area on the map</div>
+        <button id="recalc" type="button" title="Recalculate the delivery cost heatmap using the parameters above">Recalculate Heatmap</button>
+      </fieldset>
+    </form>
   </div>
 
-  <form class="params" aria-labelledby="cost-params-legend" onsubmit="return false;">
-    <fieldset>
-      <legend id="cost-params-legend">Cost Parameters</legend>
+  <div id="map"></div>
 
-      <label for="param-wage">Driver wage $/hr</label>
-      <input id="param-wage" name="driverWage" type="number" value="20" min="0" step="0.5"
-             title="Enter driver hourly wage in dollars" placeholder="e.g., 20" aria-label="Driver wage dollars per hour" />
-
-      <label for="param-veh">Vehicle cost $/km</label>
-      <input id="param-veh" name="vehicleCostPerKm" type="number" value="0.6" step="0.1" min="0"
-             title="Enter vehicle cost per kilometre in dollars" placeholder="e.g., 0.6" aria-label="Vehicle cost dollars per kilometre" />
-
-      <label for="param-service">Avg service time minutes</label>
-      <input id="param-service" name="avgServiceMin" type="number" value="5" min="0" step="1"
-             title="Enter average service time per stop in minutes" placeholder="e.g., 5" aria-label="Average service time minutes" />
-
-      <button id="recalc" type="button" title="Recalculate the delivery cost heatmap using the parameters above">Recalculate Heatmap</button>
-    </fieldset>
-  </form>
-</div>
-
-      <label><input type="checkbox" id="layer-income-100" checked> Income &gt; $100k</label>
-      <label><input type="checkbox" id="layer-income-150" checked> Income &gt; $150k</label>
-      <label><input type="checkbox" id="layer-income-200" checked> Income &gt; $200k</label>
-      <label><input type="checkbox" id="layer-penetration" checked> Customer Penetration</label>
-      <label><input type="checkbox" id="layer-commercial" checked> Commercial Hotspots</label>
-      <label><input type="checkbox" id="layer-iso" checked>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="https://unpkg.com/@turf/turf@6.5.0/turf.min.js"></script>
+  <script src="map.js"></script>
+</body>
+</html>
